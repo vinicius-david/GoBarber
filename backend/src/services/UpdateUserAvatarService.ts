@@ -2,8 +2,9 @@ import { getRepository } from 'typeorm';
 import path from 'path';
 import fs from 'fs';
 
-import User from '../models/User';
 import uploadConfig from '../config/upload';
+import AppError from '../errors/AppError';
+import User from '../models/User';
 
 interface RequestDTO {
   user_id: string;
@@ -17,7 +18,7 @@ class UpdateUserAvatarService {
     const user = await usersRepository.findOne(user_id);
 
     if (!user) {
-      throw new Error('User is not authenticated.');
+      throw new AppError('User is not authenticated.', 401);
     };
 
     if (user.avatar) {

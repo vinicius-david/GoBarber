@@ -2,8 +2,9 @@ import { getRepository } from 'typeorm';
 import { compare } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
 
-import User from '../models/User';
 import authConfig from '../config/auth';
+import User from '../models/User';
+import AppError from '../errors/AppError';
 
 interface RequestDTO {
   email: string;
@@ -22,13 +23,13 @@ class AuthenticateUserService {
     const user = await usersRepository.findOne({ where: { email } });
 
     if (!user) {
-      throw new Error('The email and password combination is wrong.');
+      throw new AppError('The email and password combination is wrong.');
     };
 
     const comparePassword = await compare(password, user.password);
 
     if (!comparePassword) {
-      throw new Error('The email and password combination is wrong.');
+      throw new AppError('The email and password combination is wrong.');
     };
 
     const { secret, expiresIn } = authConfig.jwt;
