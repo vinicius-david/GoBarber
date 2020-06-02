@@ -1,10 +1,19 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { shade } from 'polished';
 
-export const Container = styled.div`
+import Tooltip from '../Tooltip';
+
+interface ContainerProps {
+  isFocused: boolean;
+  isFilled: boolean;
+  hasError: boolean;
+}
+
+export const Container = styled.div<ContainerProps>`
 
   background-color: #222222;
 
+  color: #666360;
   border: 2px solid #222222;
   border-radius: 6px;
 
@@ -19,9 +28,22 @@ export const Container = styled.div`
   }
 
   &:hover {
-    transition: 200ms;
-    border-color: ${shade(0.5, '#ff9000')};
+    transition: border-color 1s;
+    border-color: #ff9000;
   }
+
+  ${props => props.hasError && css`
+    border-color: #c53030;
+  `}
+
+  ${props => props.isFocused && css`
+    color: #ff9000;
+    border-color: #ff9000;
+  `}
+
+  ${props => props.isFilled && css`
+    color: #ff9000;
+  `}
 
   input {
     background-color: #222222;
@@ -38,6 +60,23 @@ export const Container = styled.div`
 
   svg {
     margin-right: 12px;
-    color: #666360;
+  }
+`;
+
+export const Error = styled(Tooltip)`
+  height: 20px;
+  margin-left: 16px;
+
+  svg {
+    margin: 0;
+  }
+
+  span {
+    background: ${shade(0.3, '#c53030')};
+    color: #eee;
+
+    &::before {
+      border-color: ${shade(0.3, '#c53030')} transparent;
+    }
   }
 `;
