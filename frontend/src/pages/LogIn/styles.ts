@@ -1,7 +1,26 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { shade } from 'polished';
 
 import backgroundImg from '../../assets/sign-in-background.png';
+
+const animateFromLeft = keyframes`
+  from {
+    transform: translateX(-50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0)
+  }
+`;
+
+const animateOpacity = keyframes`
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+`;
 
 export const Container = styled.div`
   height: 100vh;
@@ -19,6 +38,15 @@ export const Content = styled.div`
 
   width: 100%;
   max-width: 700px;
+`;
+
+export const AnimatedContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  animation: ${animateFromLeft} 2s;
 
   form {
     display: flex;
@@ -69,4 +97,6 @@ export const BackgroundImage = styled.div`
 
   background: url(${backgroundImg}) no-repeat center;
   background-size: cover;
+
+  animation: ${animateOpacity} 1s;
 `;

@@ -36,7 +36,7 @@ export const ToastProvider: React.FC = ({ children }) => {
 
     setMessages((oldMessages) => [...oldMessages, toastMessage]);
 
-    setTimeout(() => {removeToast(id)}, 3000);
+    setTimeout(() => {removeToast(id)}, 4000);
   }, [removeToast]);
 
   return (
