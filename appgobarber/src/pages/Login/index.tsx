@@ -10,6 +10,7 @@ import Input from '../../components/Input';
 import Button from '../../components/Button';
 import logoImg from '../../assets/logo.png';
 import getValidationErrors from '../../utils/getValidationErrors';
+import { useAuth } from '../../hooks/AuthContext';
 
 import { Container, Title, ForgotPassword, ForgotPasswordText, CreateAccount, CreateAccountText } from './styles';
 
@@ -22,6 +23,10 @@ const LogIn: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
   const passwordInputRef = useRef<TextInput>(null);
   const navigation = useNavigation();
+
+  const { logIn, user } = useAuth();
+
+  console.log(user);
 
   const handleSubmit = useCallback(async (data: LogInFormData) => {
     try {
@@ -36,12 +41,10 @@ const LogIn: React.FC = () => {
         abortEarly: false,
       });
 
-      // await logIn({
-      //   email: data.email,
-      //   password: data.password,
-      // });
-
-      // history.push('/dashboard');
+      await logIn({
+        email: data.email,
+        password: data.password,
+      });
 
     } catch (error) {
       if (error instanceof Yup.ValidationError) {
@@ -54,7 +57,7 @@ const LogIn: React.FC = () => {
       Alert.alert('Erro na autenticação', 'Não foi possível fazer o login, cheque as credenciais.');
 
     }
-  }, []);
+  }, [logIn]);
 
   return (
     <>
