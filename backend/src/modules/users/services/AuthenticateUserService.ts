@@ -1,7 +1,8 @@
-import { getRepository } from 'typeorm';
 import { compare } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
+import { injectable, inject } from 'tsyringe';
 
+import IUsersRepository from '../repositories/IUsersRepository';
 import authConfig from '@config/auth';
 import User from '@modules/users/infra/typeorm/entities/User';
 import AppError from '@shared/errors/AppError';
@@ -16,11 +17,16 @@ interface ResponseDTO {
   token: string;
 }
 
+@injectable()
 class AuthenticateUserService {
-  public async execute({ email, password }: RequestDTO): Promise<ResponseDTO> {
-    const usersRepository = getRepository(User);
+  constructor(
+    @inject('UsersRepository')
+    private usersRepository: IUsersRepository
+  ) {}
 
-    const user = await usersRepository.findOne({ where: { email } });
+  public async execute({ email, password }: RequestDTO): Promise<ResponseDTO> {
+
+    const user = await this.usersRepository.findByEmail(email);
 
     if (!user) {
       throw new AppError('The email and password combination is wrong.');
