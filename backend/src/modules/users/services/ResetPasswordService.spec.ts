@@ -15,7 +15,6 @@ describe('ResetPassword', () => {
     fakeUsersRepository = new FakeUsersRepository();
     fakeUserTokensRepository = new FakeUserTokensRepository();
     fakeHashProvider = new FakeHashProvider();
-
     resetPasswordService = new ResetPasswordService(
       fakeUsersRepository,
       fakeUserTokensRepository,
