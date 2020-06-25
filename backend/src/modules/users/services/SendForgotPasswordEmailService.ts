@@ -17,7 +17,7 @@ class SendForgotPasswordEmailService {
     @inject('UsersRepository')
     private usersRepository: IUsersRepository,
 
-    @inject('EtherealMailProvider')
+    @inject('MailProvider')
     private mailProvider: IMailProvider,
 
     @inject('UserTokensRepository')
@@ -31,10 +31,20 @@ class SendForgotPasswordEmailService {
 
     const { token } = await this.userTokensRepository.generate(user.id);
 
-    await this.mailProvider.sendMail(
-      email,
-      `Email de recuperação de senha token: ${token}`,
-    );
+    await this.mailProvider.sendMail({
+      to: {
+        name: user.name,
+        email: user.email,
+      },
+      subject: '[GoBarber] Recuperação de senha',
+      templateData: {
+        template: 'Usuário: {{name}} - token: {{token}}',
+        variables: {
+          name: user.name,
+          token,
+        }
+      }
+    });
   }
 }
 
