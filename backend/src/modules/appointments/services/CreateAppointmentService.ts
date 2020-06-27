@@ -1,6 +1,6 @@
 import 'reflect-metadata';
 
-import { startOfHour } from 'date-fns';
+import { startOfHour, isBefore, getHours } from 'date-fns';
 import { injectable, inject } from 'tsyringe';
 
 import IAppointmentsRepository from '../repositories/IAppointmentsRepository';
@@ -9,6 +9,7 @@ import Appointment from '@modules/appointments/infra/typeorm/entities/Appointmen
 
 interface IRequestDTO {
   provider_id: string;
+  user_id: string;
   date: Date;
 };
 
@@ -19,8 +20,18 @@ class CreateAppointmentService {
     private appointmentsRepository: IAppointmentsRepository
   ) {}
 
-  public async execute({ provider_id, date }: IRequestDTO): Promise<Appointment> {
+  public async execute({ provider_id, user_id, date }: IRequestDTO): Promise<Appointment> {
     const appointmentDate = startOfHour(date);
+
+    if (provider_id === user_id) throw new AppError("You can't create appointment with yourself.");
+
+    if (isBefore(appointmentDate, Date.now())) {
+      throw new AppError("You can't create an appointment in the past.");
+    };
+
+    if (getHours(appointmentDate) < 8 || getHours(appointmentDate) > 17) {
+      throw new AppError('You can create appointments only between 8h and 17h');
+    };
 
     const checkAppointmentAvailability = await this.appointmentsRepository.findByDate(appointmentDate);
 
@@ -30,6 +41,7 @@ class CreateAppointmentService {
 
     const appointment = this.appointmentsRepository.create({
       provider_id,
+      user_id,
       date: appointmentDate,
     });
 
