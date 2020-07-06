@@ -4,6 +4,7 @@ import IAppointmentsRepository from '../repositories/IAppointmentsRepository';
 import ICacheProvider from '@shared/container/providers/CacheProvider/models/ICacheProvider';
 
 import Appointment from '../infra/typeorm/entities/Appointment';
+import { classToClass } from 'class-transformer';
 
 interface RequestDTO {
   provider_id: string;
@@ -36,12 +37,11 @@ class ListProviderAppointmentsService
         year,
       });
 
-      await this.cacheProvder.save(cacheKey, appointments);
+      await this.cacheProvder.save(cacheKey, classToClass(appointments));
     }
 
     return appointments;
   }
 };
 
-export default ListProviderAppointmentsService
-;
+export default ListProviderAppointmentsService;

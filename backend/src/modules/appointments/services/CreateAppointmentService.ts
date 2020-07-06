@@ -42,7 +42,11 @@ class CreateAppointmentService {
       throw new AppError('You can create appointments only between 8h and 17h');
     };
 
-    const checkAppointmentAvailability = await this.appointmentsRepository.findByDate(appointmentDate);
+    const checkAppointmentAvailability = await this.appointmentsRepository
+    .findByDate(
+      appointmentDate,
+      provider_id,
+    );
 
     if (checkAppointmentAvailability) {
       throw new AppError('This appointment is not available.');
