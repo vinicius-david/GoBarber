@@ -13,15 +13,6 @@ const animateFromLeft = keyframes`
   }
 `;
 
-const animateOpacity = keyframes`
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-`;
-
 export const Container = styled.div`
   height: 100vh;
 
@@ -97,6 +88,4 @@ export const BackgroundImage = styled.div`
 
   background: url(${backgroundImg}) no-repeat center;
   background-size: cover;
-
-  animation: ${animateOpacity} 1s;
 `;
