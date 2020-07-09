@@ -1,7 +1,18 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { tint, shade } from 'polished';
 
-export const Container = styled.div``;
+const animateOpacity = keyframes`
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+`;
+
+export const Container = styled.div`
+  animation: ${animateOpacity} 1s;
+`;
 
 export const Header = styled.header`
   padding: 32px 0;
@@ -59,8 +70,13 @@ export const Profile = styled.div`
     color: #f4ede8;
   }
 
-  strong {
+  a {
+    text-decoration: none;
     color: #ff9000;
+
+    &:hover {
+      opacity: 0.8;
+    }
   }
 `;
 
@@ -168,7 +184,7 @@ export const Section = styled.section`
   margin-top: 48px;
 
   > strong {
-    color: #999591;
+    color: #ff9000;
     font-size: 20px;
     line-height: 26px;
     border-bottom: 1px solid #3e3b47;
@@ -176,6 +192,10 @@ export const Section = styled.section`
     display: block;
     padding-bottom: 16px;
     margin-bottom: 16px;
+  }
+
+  > p {
+    color: #999591;
   }
 `;
 
