@@ -40,8 +40,9 @@ const Register: React.FC = () => {
       await schema.validate(data, {
         abortEarly: false,
       });
-
+      console.log('ants');
       await api.post('/users', data);
+      console.log('ok');
 
       addToast({
         type: 'success',
